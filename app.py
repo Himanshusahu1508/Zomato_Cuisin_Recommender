@@ -5,14 +5,21 @@ import joblib
 import re
 
 # ---------- Load artifacts ----------
+from pathlib import Path
+import joblib, pandas as pd
+
+ROOT = Path(__file__).parent.resolve()
+TFIDF_PATH = ROOT / "tfidf.joblib"
+KMEANS_PATH = ROOT / "kmeans_8.joblib"
+DF_PATH = ROOT / "zomato_with_clusters.pkl"
+
 @st.cache_resource
 def load_artifacts():
-    tfidf = joblib.load("data/tfidf.joblib")
-    kmeans = joblib.load("data/kmeans_8.joblib")
-    df = pd.read_pickle("data/zomato_with_clusters.pkl")
+    tfidf = joblib.load(TFIDF_PATH)
+    kmeans = joblib.load(KMEANS_PATH)
+    df = pd.read_pickle(DF_PATH)
     return tfidf, kmeans, df
 
-tfidf, kmeans, df = load_artifacts()
 
 # Infer column names
 name_col = [c for c in ['restaurant_name','restaurant','name'] if c in df.columns]
